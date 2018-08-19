@@ -1,38 +1,47 @@
 from datetime import datetime
 import logging
-import json
-from wsgiref.util import is_hop_by_hop
+from json import dumps
 
-from bottle import route, request, response, run
-import requests
+import aiohttp
+from aiohttp.web import Application, Response, RouteTableDef, HTTPNotFound, json_response, run_app
 
-log = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 data = {}
 
 
-def forward_request():
-    remote = requests.request(request.method, request.url, headers=request.headers)
-    headers = {k: v for k, v in remote.headers.items() if not is_hop_by_hop(k)}
-    response.headers.update(headers)
-    return remote.text
+async def forward_request(request):
+    async with aiohttp.request(request.method, request.url, headers=request.headers) as response:
+        return Response(text=await response.text(), headers=response.headers)
 
 
-@route('/weatherstation/updateweatherstation')
-def measurement():
-    measurement = dict(request.params)
+app = Application()
+routes = RouteTableDef()
+
+
+@routes.get('/weatherstation/updateweatherstation')
+async def measurement(request):
+    measurement = dict(request.query)
     measurement['dateutc'] = datetime.utcnow()
     station = data.setdefault(measurement.pop('id'), {})
     sensor_data = station.setdefault(measurement.pop('sensor'), [])
     sensor_data.append(measurement)
-    return forward_request()
+    return await forward_request(request)
 
 
-@route('/log')
-def log():
-    return json.dumps(data, indent=4, sort_keys=True, default=str)
+@routes.get('/log')
+def log(_):
+    return json_response(text=dumps(data, default=str))
 
 
-@route('/<:re:.*>')
-def catch_all():
-    log.warning('Unexpected request %s', request)
+@routes.route('*', '/{tail:.*}')
+async def catch_all(request):
+    logger.warning('Unexpected request %s', request)
+    raise HTTPNotFound()
+
+
+app.add_routes(routes)
+
+
+def run(host, port):
+    return run_app(app, host=host, port=port)

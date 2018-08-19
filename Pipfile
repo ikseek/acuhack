@@ -5,8 +5,8 @@ name = "pypi"
 
 [packages]
 psutil = "*"
-bottle = "*"
 requests = "*"
+aiohttp = "*"
 
 [dev-packages]
 
