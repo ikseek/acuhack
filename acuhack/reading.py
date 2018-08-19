@@ -18,7 +18,7 @@ class Reading:
 
     @classmethod
     def from_dict(cls, data):
-        return cls(timesamp=datetime.utcnow(),
+        return cls(timestamp=datetime.utcnow(),
                    temperature=ur.Quantity(float(data['tempf']), 'degF'),
                    humidity_rel=float(data['humidity']),
                    pressure=ur.Quantity(float(data['baromin']), 'in_Hg'))
