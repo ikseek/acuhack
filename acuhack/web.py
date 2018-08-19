@@ -22,7 +22,9 @@ routes = RouteTableDef()
 
 @routes.get('/weatherstation/updateweatherstation')
 async def measurement(request):
-    data.append(Message.from_dict(dict(request.query)))
+    message = Message.from_dict(dict(request.query))
+    message.reading = message.reading.to_metric()
+    data.append(message)
     return await forward_request(request)
 
 

@@ -13,6 +13,9 @@ class Reading:
     humidity_rel: float
     pressure: ur.Quantity
 
+    def __str__(self):
+        return f"{self.timestamp}, {self.temperature:P~.1f}, {self.pressure:P~.1f}, {self.humidity_rel:.0%}"
+
     def to_metric(self):
         return Reading(self.timestamp, self.temperature.to('celsius'), self.humidity_rel, self.pressure.to('hPa'))
 
@@ -20,7 +23,7 @@ class Reading:
     def from_dict(cls, data):
         return cls(timestamp=datetime.utcnow(),
                    temperature=ur.Quantity(float(data['tempf']), 'degF'),
-                   humidity_rel=float(data['humidity']),
+                   humidity_rel=float(data['humidity']) / 100,
                    pressure=ur.Quantity(float(data['baromin']), 'in_Hg'))
 
 
@@ -31,6 +34,9 @@ class Message:
     signal_strength: float
     battery_low: bool
     reading: Reading
+
+    def __str__(self):
+        return f"{self.sensor:04}: {self.reading}"
 
     @classmethod
     def from_dict(cls, data):
