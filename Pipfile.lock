@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c31968831750b6b5db645ec771a5062939d9223d0351d6ab0da0c91559496e92"
+            "sha256": "ea42467abbf88cc016275f13a40e78b06d260f5a47564aeb63aa274f67d56214"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -52,13 +52,6 @@
             ],
             "version": "==18.1.0"
         },
-        "certifi": {
-            "hashes": [
-                "sha256:4c1d68a1408dd090d2f3a869aa94c3947cc1d967821d1ed303208c9f41f0f2f4",
-                "sha256:b6e8b28b2b7e771a41ecdd12d4d43262ecab52adebbafa42c77d6b57fb6ad3a4"
-            ],
-            "version": "==2018.8.13"
-        },
         "chardet": {
             "hashes": [
                 "sha256:84ab92ed1c4d4f16916e05906b6b75a6c0fb5db821cc65e70cbd64a3e2a5eaae",
@@ -98,6 +91,13 @@
             "markers": "python_version >= '3.4.1'",
             "version": "==4.3.1"
         },
+        "pint": {
+            "hashes": [
+                "sha256:afcf31443a478c32bbac4b00337ee9026a13d0e2ac83d30c79151462513bb0d4"
+            ],
+            "index": "pypi",
+            "version": "==0.8.1"
+        },
         "psutil": {
             "hashes": [
                 "sha256:0d8da7333549a998556c18eb2af3ce902c28d66ceb947505c008f91e9f988abd",
@@ -112,22 +112,6 @@
             ],
             "index": "pypi",
             "version": "==5.4.7"
-        },
-        "requests": {
-            "hashes": [
-                "sha256:63b52e3c866428a224f97cab011de738c36aec0185aa91cfacd418b5d58911d1",
-                "sha256:ec22d826a36ed72a7358ff3fe56cbd4ba69dd7a6718ffd450ff0e9df7a47ce6a"
-            ],
-            "index": "pypi",
-            "version": "==2.19.1"
-        },
-        "urllib3": {
-            "hashes": [
-                "sha256:a68ac5e15e76e7e5dd2b8f94007233e01effe3e50e8daddf69acfd81cb686baf",
-                "sha256:b5725a0bd4ba422ab0e66e89e030c806576753ea3ee08554382c14e685d117b5"
-            ],
-            "markers": "python_version != '3.3.*' and python_version >= '2.6' and python_version != '3.0.*' and python_version != '3.2.*' and python_version < '4' and python_version != '3.1.*'",
-            "version": "==1.23"
         },
         "yarl": {
             "hashes": [

@@ -1,13 +1,14 @@
 from datetime import datetime
 import logging
-from json import dumps
 
 import aiohttp
-from aiohttp.web import Application, Response, RouteTableDef, HTTPNotFound, json_response, run_app
+from aiohttp.web import Application, Response, RouteTableDef, HTTPNotFound, run_app
+
+from acuhack.reading import Message
 
 logger = logging.getLogger(__name__)
 
-data = {}
+data = []
 
 
 async def forward_request(request):
@@ -21,17 +22,13 @@ routes = RouteTableDef()
 
 @routes.get('/weatherstation/updateweatherstation')
 async def measurement(request):
-    measurement = dict(request.query)
-    measurement['dateutc'] = datetime.utcnow()
-    station = data.setdefault(measurement.pop('id'), {})
-    sensor_data = station.setdefault(measurement.pop('sensor'), [])
-    sensor_data.append(measurement)
+    data.append(Message.from_dict(dict(request.query)))
     return await forward_request(request)
 
 
 @routes.get('/log')
 def log(_):
-    return json_response(text=dumps(data, default=str))
+    return Response(text="\n".join(str(m) for m in data))
 
 
 @routes.route('*', '/{tail:.*}')
